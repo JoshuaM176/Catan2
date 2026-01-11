@@ -4,6 +4,7 @@ import catan.host.game.board.tile.numbertokenassigner.DefaultNumberTokenAssigner
 import catan.host.game.board.tile.numbertokenassigner.NumberTokenAssigner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import catan.host.game.board.Board;
 import catan.host.game.board.resources.Resource;
@@ -28,5 +29,10 @@ public class TokenAssignTest {
         Board.addResources(resources, Resource.DESERT, 1);
         Board board = new Board(tilePattern, numberTokens, numberTokenAssigner, resources);
         System.out.println(board);
+        System.out.println(Arrays.toString(board.tiles[0][1].vertices));
+        System.out.println(Arrays.toString(board.tiles[0][2].vertices));
+        System.out.println(Arrays.toString(board.tiles[1][1].vertices));
+        System.out.println(Arrays.toString(board.tiles[2][1].vertices));
+        System.out.println(Arrays.toString(board.tiles[2][2].vertices));
     }
 }
