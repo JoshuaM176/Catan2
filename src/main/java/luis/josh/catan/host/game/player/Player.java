@@ -8,11 +8,13 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 
+import luis.josh.catan.host.game.board.Harbor;
 import luis.josh.catan.host.game.board.resources.Resource;
 
 public class Player implements ResourceListener{
     Map<Resource, Integer> resources = new HashMap<Resource, Integer>(); // Card Resources
     List<DevelopmentCard> developmentCards = new ArrayList<DevelopmentCard>();
+    public List<Harbor> harbors = new ArrayList<Harbor>();
 
     @Override
     public void addResource(Resource resource) {

@@ -32,7 +32,17 @@ public class TokenAssignTest {
             Resource.SHEEP, 4,
             Resource.DESERT, 1
         ));
-        HarborAssigner harborAssigner = new DefaultHarborAssigner(0);
+        HarborAssigner harborAssigner = new DefaultHarborAssigner(0,
+            Map.of(
+                Resource.STONE, 1,
+                Resource.BRICK, 1,
+                Resource.WHEAT, 1,
+                Resource.LOGS, 1,
+                Resource.SHEEP, 1,
+                Resource.ANY, 4
+            )
+        );
+
         Board board = new Board(tilePattern, numberTokens, numberTokenAssigner, tileCreator, harborAssigner);
         System.out.println(board);
         System.out.println(Arrays.toString(board.tiles[0][1].edges));

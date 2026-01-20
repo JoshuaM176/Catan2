@@ -6,5 +6,6 @@ public enum Resource{
     WHEAT,
     LOGS,
     SHEEP,
-    DESERT;
+    DESERT,
+    ANY;
 }

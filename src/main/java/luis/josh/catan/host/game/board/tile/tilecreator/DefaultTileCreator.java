@@ -5,6 +5,7 @@ import luis.josh.catan.host.game.board.tile.DesertTile;
 import luis.josh.catan.host.game.board.tile.ResourceTile;
 import luis.josh.catan.host.game.board.tile.Tile;
 import luis.josh.catan.host.game.dice.Dice;
+import luis.josh.catan.host.game.gamepieces.Robber;
 
 import java.util.Map;
 import java.util.Random;
@@ -33,6 +34,7 @@ public class DefaultTileCreator implements TileCreator{
                     Resource resource = resources.remove(Math.abs(random.nextInt()) % resources.size());
                     if(resource == Resource.DESERT) {
                         tiles[i][j] = new DesertTile();
+                        tiles[i][j].robber = new Robber();
                     }
                     else{
                         tiles[i][j] = new ResourceTile(resource);

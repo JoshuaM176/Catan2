@@ -10,6 +10,9 @@ public class Vertex implements ResourceListener{
 
     public void setPlacedItem(VertexPlaceable item) {
         placedItem = item;
+        if(harbor != null) {
+            item.addHarbor(harbor);
+        }
     }
 
     @Override

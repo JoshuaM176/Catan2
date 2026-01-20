@@ -4,4 +4,6 @@ import luis.josh.catan.host.game.board.resources.ResourceListener;
 
 public interface VertexPlaceable extends ResourceListener{
     
+    public void addHarbor(Harbor harbor);
+
 }
