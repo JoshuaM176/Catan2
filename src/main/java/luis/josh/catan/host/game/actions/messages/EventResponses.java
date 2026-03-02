@@ -20,7 +20,6 @@ public class EventResponses {
     }
 
 
-
     public static JSONObject discardHalf() {
         String jsonString = """
         {
