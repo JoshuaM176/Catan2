@@ -61,6 +61,6 @@ public class CreateBoard {
         board.jPanel.setLocation(200, 200);
         frame.add(board.jPanel);
         frame.setVisible(true);
-				board.redraw(100);
+				board.redraw(150);
     } 
 }

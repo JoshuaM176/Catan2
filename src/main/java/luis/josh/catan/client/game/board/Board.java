@@ -38,11 +38,10 @@ public class Board {
                         (int)(long)tileData.get("numberToken"),
                         new Coordinate(col, row),
                         tileOnClick,
-                        vertexOnClick
+                        vertexOnClick,
+                        jPanel
                     );
                     tiles[row][col] = tile;
-                    jPanel.add(tile.image);
-                    jPanel.add(tile.button);
                 }
             }
         }

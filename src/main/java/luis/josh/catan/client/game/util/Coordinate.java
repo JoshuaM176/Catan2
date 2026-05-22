@@ -13,4 +13,11 @@ public class Coordinate {
         row = y;
         col = x;
     }
+
+    public Coordinate add(Coordinate coordinate) {
+        return new Coordinate(
+            this.x + coordinate.x,
+            this.y + coordinate.y
+        );
+    }
 }
