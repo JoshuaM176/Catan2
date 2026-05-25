@@ -17,7 +17,7 @@ public class ActionManager {
         this.actionMap = actionMap;
     }
 
-    public JSONObject[] ExecuteAction(JSONObject data) {
+    public JSONObject[] executeAction(JSONObject data) {
         int playerNum = (int)(long)data.get("player");
         Player player = players[playerNum];
         String actionName = (String)data.get("action");

@@ -20,4 +20,11 @@ public class Coordinate {
             this.y + coordinate.y
         );
     }
+
+    public Coordinate difference(Coordinate coordinate) {
+        return new Coordinate(
+            this.x - coordinate.x,
+            this.y - coordinate.y
+        );
+    }
 }

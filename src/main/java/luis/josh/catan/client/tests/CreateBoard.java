@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import luis.josh.catan.client.game.board.Board;
+import luis.josh.catan.client.game.board.tile.Edge;
 import luis.josh.catan.client.game.board.tile.Tile;
 import luis.josh.catan.client.game.board.tile.Vertex;
 
@@ -59,7 +60,12 @@ public class CreateBoard {
 					System.out.println("Tile x: " + vertex.tilePos.x);
 					System.out.println("Tile y: " + vertex.tilePos.y);
 				};
-        Board board = new Board(data, tileOnClick, vertexOnClick);
+				Consumer<Edge> edgeOnClick = edge -> {
+					System.out.println("Edge pos: " + edge.pos);
+					System.out.println("Tile x: " + edge.tilePos.x);
+					System.out.println("Tile y: " + edge.tilePos.y);
+				};
+        Board board = new Board(data, tileOnClick, vertexOnClick, edgeOnClick);
         board.jPanel.setLocation(200, 200);
         frame.add(board.jPanel);
         frame.setVisible(true);

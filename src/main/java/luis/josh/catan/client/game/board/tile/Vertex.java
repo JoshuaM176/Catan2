@@ -27,12 +27,12 @@ public class Vertex {
     }
 
     public void redraw(int size, Coordinate topLeft) {
-        Coordinate coordinate = getCoordinate((int)(size));
+        Coordinate coordinate = getCoordinate(size);
         coordinate = coordinate.add(topLeft);
-        button.setBounds(getButtonBounds(coordinate, size));
+        button.setBounds(getButtonBounds(size, coordinate));
     }
 
-    private Rectangle getButtonBounds(Coordinate pos, int size) {
+    private Rectangle getButtonBounds(int size, Coordinate pos) {
         size = size/5;
         return new Rectangle(
             pos.x - size/2,
@@ -43,6 +43,10 @@ public class Vertex {
     }
 
     private Coordinate getCoordinate(int size) {
+        return getCoordinate(size, pos);
+    }
+    
+    static protected Coordinate getCoordinate(int size, int pos) {
         if(pos == 0) {
             return new Coordinate(
                 size / 2,

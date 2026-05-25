@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import luis.josh.catan.client.game.board.tile.Edge;
 import luis.josh.catan.client.game.board.tile.Tile;
 import luis.josh.catan.client.game.board.tile.Vertex;
 import luis.josh.catan.client.game.util.Coordinate;
@@ -18,7 +19,7 @@ public class Board {
     Tile[][] tiles;
     public JPanel jPanel;
     
-    public Board(JSONObject data, Consumer<Tile> tileOnClick, Consumer<Vertex> vertexOnClick) {
+    public Board(JSONObject data, Consumer<Tile> tileOnClick, Consumer<Vertex> vertexOnClick, Consumer<Edge> edgeOnClick) {
         jPanel = new JPanel();
         jPanel.setLayout(null);
         JSONArray tileMatrix = (JSONArray)data.get("board");
@@ -39,6 +40,7 @@ public class Board {
                         new Coordinate(col, row),
                         tileOnClick,
                         vertexOnClick,
+                        edgeOnClick,
                         jPanel
                     );
                     tiles[row][col] = tile;
