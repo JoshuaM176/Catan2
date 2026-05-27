@@ -28,7 +28,7 @@ public class TokenAssignTest {
             Resource.STONE, 3,
             Resource.BRICK, 3,
             Resource.WHEAT, 4,
-            Resource.LOGS, 4,
+            Resource.LOG, 4,
             Resource.SHEEP, 4,
             Resource.DESERT, 1
         ));
@@ -37,7 +37,7 @@ public class TokenAssignTest {
                 Resource.STONE, 1,
                 Resource.BRICK, 1,
                 Resource.WHEAT, 1,
-                Resource.LOGS, 1,
+                Resource.LOG, 1,
                 Resource.SHEEP, 1,
                 Resource.ANY, 4
             )

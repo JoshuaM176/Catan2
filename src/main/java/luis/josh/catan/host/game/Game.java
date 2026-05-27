@@ -35,10 +35,29 @@ public abstract class Game {
     public abstract Board generateBoard();
 
     public Map<String, Action> generateActions(Board board, Player[] players) {
-        HashMap<String, Action> actionMap = new HashMap<>();
-        actionMap.put("placeSettlement", new PlaceSettlement(board, Map.of(Resource.BRICK, 1)));
-        return actionMap;
+        return generateDefaultActions(board, players);
     };
+
+    public Map<String, Action> generateDefaultActions(Board board, Player[] players) {
+        HashMap<String, Action> actionMap = new HashMap<>();
+        actionMap.put("discard", new Discard());
+        actionMap.put("moveRobber", new MoveRobber(board, players));
+        actionMap.put("placeCity", new PlaceCity(board, Map.of(
+            Resource.WHEAT, 2,
+            Resource.STONE, 3
+        )));
+        actionMap.put("placeRoad", new PlaceRoad(board, Map.of(
+            Resource.BRICK, 1,
+            Resource.LOG, 1
+        )));
+        actionMap.put("placeSettlement", new PlaceSettlement(board, Map.of(
+            Resource.BRICK, 1,
+            Resource.LOG, 1,
+            Resource.SHEEP, 1,
+            Resource.WHEAT, 1
+        )));
+        return actionMap;
+    }
 
     public void acceptData(JSONObject data) {
         logger.info("Host recieved incoming message: {}", data);

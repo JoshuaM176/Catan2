@@ -4,7 +4,7 @@ public enum Resource{
     STONE,
     BRICK,
     WHEAT,
-    LOGS,
+    LOG,
     SHEEP,
     DESERT,
     ANY;

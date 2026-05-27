@@ -20,8 +20,8 @@ public class PlacementTest {
         Board board = GenerateTestBoard.generateTestBoard();
         Player player1 = new Player();
         Player player2 = new Player();
-        PlaceSettlement placeSettlement = new PlaceSettlement(board, Map.of(Resource.LOGS, 1));
-        PlaceRoad placeRoad = new PlaceRoad(board, Map.of(Resource.LOGS, 1));
+        PlaceSettlement placeSettlement = new PlaceSettlement(board, Map.of(Resource.LOG, 1));
+        PlaceRoad placeRoad = new PlaceRoad(board, Map.of(Resource.LOG, 1));
         PlaceCity placeCity = new PlaceCity(board, Map.of(Resource.STONE, 1));
         RollDice rollDice = new RollDice(board);
         JSONObject data = (JSONObject)JSONValue.parse(
