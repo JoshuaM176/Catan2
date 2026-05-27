@@ -28,7 +28,7 @@ public abstract class Game {
         this.players = new Player[players];
         this.actionManager = new ActionManager(this.players, generateActions(this.board, this.players));
         for(int i = 0; i < players; i++) {
-            this.players[i] = new Player();
+            this.players[i] = new Player(messageQueue, i);
         }
     }
 

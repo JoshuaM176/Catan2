@@ -26,9 +26,9 @@ public class PlaceCity implements Action{
     @Override
     public JSONObject[] execute(JSONObject data, Player player) {
         JSONObject location = (JSONObject)data.get("tile");
-        int row = (int)(long)location.get("row");
-        int col = (int)(long)location.get("col");
-        int vertex = (int)(long)location.get("vertex");
+        int row = (int)location.get("row");
+        int col = (int)location.get("col");
+        int vertex = (int)location.get("vertex");
 
         Tile tile = board.tiles[row][col];
         if(tile == null) {

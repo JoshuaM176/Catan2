@@ -1,5 +1,6 @@
 package luis.josh.catan.host.tests;
 
+import java.util.Map;
 import java.util.function.Consumer;
 
 import org.json.simple.JSONObject;
@@ -27,23 +28,73 @@ public class GameTest {
             }
         };
 
-        JSONObject data = (JSONObject)JSONValue.parse(
-                """
-            {
-                "tile": {
-                    "row": 1,
-                    "col": 1,
-                    "vertex": 1
-                },
-                "start": 0
-            }
-                """
+        JSONObject action = new JSONObject(
+            Map.of(
+                "action", "placeSettlement",
+                "player", 1,
+                "data", new JSONObject(Map.of(
+                    "tile", new JSONObject(Map.of(
+                        "row", 1,
+                        "col", 1,
+                        "vertex", 1
+                    )),
+                    "start", 1
+                ))
+            )
         );
-        JSONObject action = new JSONObject();
-        action.put("action", "placeSettlement");
-        action.put("data", data);
-        action.put("player", 1);
+
+        testGame.acceptData(action);
+        
+        action = new JSONObject(
+            Map.of(
+                "action", "placeRoad",
+                "player", 1,
+                "data", new JSONObject(Map.of(
+                    "tile", new JSONObject(Map.of(
+                        "row", 1,
+                        "col", 1,
+                        "edge", 1
+                    )),
+                    "start", 1
+                ))
+            )
+        );
+
+        testGame.acceptData(action);
+
+        action = new JSONObject(
+            Map.of(
+                "action", "placeSettlement",
+                "player", 1,
+                "data", new JSONObject(Map.of(
+                    "tile", new JSONObject(Map.of(
+                        "row", 1,
+                        "col", 1,
+                        "vertex", 3
+                    )),
+                    "start", 2
+                ))
+            )
+        );
         
         testGame.acceptData(action);
+        
+        action = new JSONObject(
+            Map.of(
+                "action", "placeRoad",
+                "player", 1,
+                "data", new JSONObject(Map.of(
+                    "tile", new JSONObject(Map.of(
+                        "row", 1,
+                        "col", 1,
+                        "edge", 2
+                    )),
+                    "start", 2
+                ))
+            )
+        );
+
+        testGame.acceptData(action);
+
     }
 }

@@ -25,11 +25,11 @@ public class PlaceRoad implements Action{
 
     @Override
     public JSONObject[] execute(JSONObject data, Player player) {
-        int start = (int)(long)data.get("start");
+        int start = (int)data.get("start");
         JSONObject location = (JSONObject)data.get("tile");
-        int row = (int)(long)location.get("row");
-        int col = (int)(long)location.get("col");
-        int edge = (int)(long)location.get("edge");
+        int row = (int)location.get("row");
+        int col = (int)location.get("col");
+        int edge = (int)location.get("edge");
 
         Tile tile = board.tiles[row][col];
         if(tile == null) {
