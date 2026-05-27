@@ -2,6 +2,7 @@ package luis.josh.catan.host.game.actions;
 
 import org.json.simple.JSONObject;
 
+import luis.josh.catan.host.game.actions.messages.EventResponses;
 import luis.josh.catan.host.game.board.Board;
 import luis.josh.catan.host.game.board.resources.Resource;
 import luis.josh.catan.host.game.board.tile.Tile;
@@ -31,17 +32,26 @@ public class PlaceSettlement implements Action{
 
         Tile tile = board.tiles[row][col];
         if(tile == null) {
-            return new JSONObject[0]; //TODO
+            JSONObject message = new JSONObject(
+                Map.of("message", "Cannot build in the ocean.")
+            );
+            return new JSONObject[]{EventResponses.eventResponse("placeSettlementFailed", "self", message)};
         }
         if(!board.isValidPlacement(row, col, vertex)) {
-            return new JSONObject[0]; //TODO
+            JSONObject message = new JSONObject(
+                Map.of("message", "Cannot place within 1 distance of an existing settlement.")
+            );
+            return new JSONObject[]{EventResponses.eventResponse("placeSettlementFailed", "self", message)};
         }
         if(start == 0) {
             if(!tile.vertices[vertex].isConnected(player)) {
-                return new JSONObject[0]; // TODO
+                JSONObject message = new JSONObject(
+                    Map.of("message", "No roads connected.")
+                );
+                return new JSONObject[]{EventResponses.eventResponse("placeSettlementFailed", "self", message)};
             }
             if(!player.checkAndPurchase(resourceCost)) {
-                return new JSONObject[0]; // TODO
+                return new JSONObject[]{EventResponses.genericPurchaseFailed("Settlement")};
             }
         }
         if(start == 2) {
@@ -53,9 +63,12 @@ public class PlaceSettlement implements Action{
             }
         }
         tile.vertices[vertex].setPlacedItem(new Settlement(player));
-
-        data.put("event", "placedSettlement");
-        data.put("players", "all");
-        return new JSONObject[]{data};
+        return new JSONObject[]{
+            EventResponses.eventResponse(
+                "placedSettlement",
+                "all",
+                data
+            )
+        };
     }
 }

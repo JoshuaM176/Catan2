@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
+import luis.josh.catan.host.game.actions.messages.EventResponses;
 import luis.josh.catan.host.game.board.Board;
 import luis.josh.catan.host.game.board.VertexPlaceable;
 import luis.josh.catan.host.game.board.resources.Resource;
@@ -31,25 +32,41 @@ public class PlaceCity implements Action{
 
         Tile tile = board.tiles[row][col];
         if(tile == null) {
-            return new JSONObject[0]; //TODO
+            JSONObject message = new JSONObject(
+                Map.of("message", "Cannot build in the ocean.")
+            );
+            return new JSONObject[]{EventResponses.eventResponse("placeCityFailed", "self", message)};
         }
         VertexPlaceable placedItem = tile.vertices[vertex].placedItem;
         if(placedItem == null) {
-            return new JSONObject[0]; // TODO
+            JSONObject message = new JSONObject(
+                Map.of("message", "City requires settlement to build on.")
+            );
+            return new JSONObject[]{EventResponses.eventResponse("placeCityFailed", "self", message)};
         }
         if(player != placedItem.getPlayer()) {
-            return new JSONObject[0]; // TODO
+            JSONObject message = new JSONObject(
+                Map.of("message", "Cannot build on another player's property.")
+            );
+            return new JSONObject[]{EventResponses.eventResponse("placeCityFailed", "self", message)};
         }
         if(!(placedItem instanceof Settlement)) {
-            return new JSONObject[0]; // TODO
+            JSONObject message = new JSONObject(
+                Map.of("message", "City requires settlement to build on.")
+            );
+            return new JSONObject[]{EventResponses.eventResponse("placeCityFailed", "self", message)};
         }
         if(!player.checkAndPurchase(resourceCost)) {
-            return new JSONObject[0]; // TODO
+            return new JSONObject[]{EventResponses.genericPurchaseFailed("City")};
         }
         tile.vertices[vertex].setPlacedItem(new City(player));
-        data.put("event","placedCity");
-        data.put("players", "all");
-        return new JSONObject[]{data};
+        return new JSONObject[]{
+            EventResponses.eventResponse(
+               "placedCity",
+               "all",
+               data
+            )
+        };
     }
     
 }

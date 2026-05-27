@@ -1,25 +1,28 @@
 package luis.josh.catan.host.game.actions.messages;
 
+import java.util.Map;
+
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 public class EventResponses {
 
     public static JSONObject eventResponse(String event, String players, JSONObject data) {
-        JSONObject rtn = new JSONObject();
-        rtn.put("event", event);
-        rtn.put("players", players);
-        rtn.put("data", data);
+        JSONObject rtn = new JSONObject(
+            Map.of(
+                "event", event,
+                "players", players,
+                "data", data
+            )
+        );
         return rtn;
     }
 
     public static JSONObject rolledDice(int numberRolled) {
-        String jsonString = """
-        "data": {
-            "numberRolled": %d
-        },
-        """;
-        JSONObject data = (JSONObject)JSONValue.parse(String.format(jsonString, numberRolled));
+        JSONObject data = new JSONObject(
+            Map.of(
+                "data", Map.of("numberRolled", numberRolled)
+            )
+        );
         return eventResponse("rolledDice", "all", data);
     }
 
@@ -28,8 +31,40 @@ public class EventResponses {
         return eventResponse("discardedHalf", "self", new JSONObject());
     }
 
+    // Error Messages
     public static JSONObject purchaseFailed(JSONObject data) {
         return eventResponse("purchaseFailed", "self", data);
     }
 
+    public static JSONObject genericPurchaseFailed(String item) {
+        JSONObject data = new JSONObject(
+            Map.of("message","Not enough resources for " + item + ".")
+        );
+        return purchaseFailed(data);
+    }
+
+    public static JSONObject moveRobberFailed() {
+        JSONObject data = new JSONObject(
+            Map.of("message", "Invalid location.")
+        );
+        return eventResponse("moveRobberFailed", "self", data);
+    }
+
+    public static JSONObject roadConnectionFailure() {
+        JSONObject data = new JSONObject(
+            Map.of(
+                "message", "Road must be connected to existing roads."
+            )
+        );
+        return eventResponse("placeRoadFailed", "self", data);
+    }
+
+    public static JSONObject firstRoadConnectionFailure() {
+        JSONObject data = new JSONObject(
+            Map.of(
+                "message", "Road must be connected to the new settlement."
+            )
+        );
+        return eventResponse("placeRoadFailed", "self", data);
+    }
 }

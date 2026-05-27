@@ -35,7 +35,7 @@ public class GameTest {
                     "col": 1,
                     "vertex": 1
                 },
-                "start": 1
+                "start": 0
             }
                 """
         );

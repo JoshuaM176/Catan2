@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
+import luis.josh.catan.host.game.actions.messages.EventResponses;
 import luis.josh.catan.host.game.board.Board;
 import luis.josh.catan.host.game.board.resources.Resource;
 import luis.josh.catan.host.game.board.tile.Tile;
@@ -32,43 +33,51 @@ public class PlaceRoad implements Action{
 
         Tile tile = board.tiles[row][col];
         if(tile == null) {
-            return new JSONObject[0]; // TODO
+            JSONObject message = new JSONObject(
+                Map.of("message", "Cannot build in the ocean.")
+            );
+            return new JSONObject[]{EventResponses.eventResponse("placeRoadFailed", "self", message)};
         }
-        if(tile.edges[edge].placedItem != null) { return null; } // TODO
+        if(tile.edges[edge].placedItem != null) {
+            JSONObject message = new JSONObject(
+                Map.of("message", "Road already exists here.")
+            );
+            return new JSONObject[]{EventResponses.eventResponse("placeRoadFailed", "self", message)};
+        }
         if(start == 0) {
             if(edge == 5) {
                 if(!tile.vertices[5].isConnected(player) && !tile.vertices[0].isConnected(player)) {
-                    return new JSONObject[0]; // TODO
+                    return new JSONObject[]{EventResponses.roadConnectionFailure()};
                 }
             }
             else if(!tile.vertices[edge].isConnected(player) && !tile.vertices[edge+1].isConnected(player)) {
-                return new JSONObject[0]; // TODO
+                return new JSONObject[]{EventResponses.roadConnectionFailure()};
             }
             if(!player.checkAndPurchase(resourceCost)) {
-                return new JSONObject[0]; // TODO
+                return new JSONObject[]{EventResponses.genericPurchaseFailed("Road")};
             }
         }
         if(start == 1 || start == 2) {
             if(edge == 5) {
                 if(tile.vertices[5].isConnected() && tile.vertices[5].placedItem != null) {
-                    return new JSONObject[0]; // TODO
+                    return new JSONObject[]{EventResponses.firstRoadConnectionFailure()};
                 }
                 if(tile.vertices[0].isConnected() && tile.vertices[0].placedItem != null) {
-                    return new JSONObject[0]; // TODO
+                    return new JSONObject[]{EventResponses.firstRoadConnectionFailure()};
                 }
                 if(!tile.vertices[5].hasPlacedItem(player) && !tile.vertices[0].hasPlacedItem(player)) {
-                    return new JSONObject[0]; // TODO
+                    return new JSONObject[]{EventResponses.firstRoadConnectionFailure()};
                 }
             }
             else {
                 if(tile.vertices[edge].isConnected() && tile.vertices[edge].placedItem != null) {
-                    return new JSONObject[0]; // TODO
+                    return new JSONObject[]{EventResponses.firstRoadConnectionFailure()};
                 }
                 if(tile.vertices[edge+1].isConnected() && tile.vertices[edge+1].placedItem != null) {
-                    return new JSONObject[0]; // TODO
+                    return new JSONObject[]{EventResponses.firstRoadConnectionFailure()};
                 }
                 if(!tile.vertices[edge].hasPlacedItem(player) && !tile.vertices[edge+1].hasPlacedItem(player)) {
-                    return new JSONObject[0]; // TODO
+                    return new JSONObject[]{EventResponses.firstRoadConnectionFailure()};
                 }
             }
         }
@@ -81,8 +90,12 @@ public class PlaceRoad implements Action{
             tile.vertices[edge].addConnection(player);
             tile.vertices[edge+1].addConnection(player);
         }
-        data.put("event","placedRoad");
-        data.put("players", "all");
-        return new JSONObject[]{data};
+        return new JSONObject[]{
+            EventResponses.eventResponse(
+               "placedRoad",
+               "all",
+               data
+            )
+        };
     }
 }

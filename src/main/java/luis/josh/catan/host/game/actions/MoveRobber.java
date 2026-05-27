@@ -2,6 +2,7 @@ package luis.josh.catan.host.game.actions;
 
 import org.json.simple.JSONObject;
 
+import luis.josh.catan.host.game.actions.messages.EventResponses;
 import luis.josh.catan.host.game.board.Board;
 import luis.josh.catan.host.game.board.resources.Resource;
 import luis.josh.catan.host.game.board.tile.Tile;
@@ -23,26 +24,26 @@ public class MoveRobber implements Action {
         JSONObject target = (JSONObject)data.get("targetTile");
         int sourceRow = (int)source.get("row");
         int sourceColumn = (int)source.get("col");
-        int targetRow = (int)(long)target.get("row");
+        int targetRow = (int)target.get("row");
         int targetColumn = (int)target.get("col");
         Player targetPlayer = players[(int)data.get("targetPlayer")];
 
         Tile sourceTile = board.tiles[sourceRow][sourceColumn];
         Tile targetTile = board.tiles[targetRow][targetColumn];
         if(sourceTile == null) { 
-            return new JSONObject[0]; //TODO
+            return new JSONObject[]{EventResponses.moveRobberFailed()};
         }
         if(targetTile == null) {
-            return new JSONObject[0]; //TODO
+            return new JSONObject[]{EventResponses.moveRobberFailed()};
         }
         if(sourceTile.robber == null) {
-            return new JSONObject[0]; //TODO
+            return new JSONObject[]{EventResponses.moveRobberFailed()};
         }
         if(targetTile.robber != null) {
-            return new JSONObject[0]; //TODO
+            return new JSONObject[]{EventResponses.moveRobberFailed()};
         }
         if(!targetTile.hasPlayer(targetPlayer)) {
-            return new JSONObject[0]; //TODO
+            return new JSONObject[]{EventResponses.moveRobberFailed()};
         }
         targetTile.robber = sourceTile.robber;
         sourceTile.robber = null;
@@ -50,9 +51,12 @@ public class MoveRobber implements Action {
         if(stolenResource != null) {
             player.addResource(stolenResource);
         }
-        data.put("event","movedRobber");
-        data.put("players", "all");
-        return new JSONObject[]{data};
+        return new JSONObject[]{
+            EventResponses.eventResponse(
+               "movedRobber",
+               "all",
+               data
+            )
+        };
     }
-    
 }

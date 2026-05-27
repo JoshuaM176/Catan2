@@ -50,6 +50,7 @@ public class PipelineTest {
             """
         {
             "sourceTile": {
+                
                 "row": 0,
                 "col": 1
             },
