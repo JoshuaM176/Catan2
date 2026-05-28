@@ -27,7 +27,7 @@ public class ActionManager {
         logger.info("Executing action {} from player {}", actionName, playerNum);
         Action action = actionMap.get(actionName);
         if(action == null) {
-            logger.info("Failed to execute unknown action {}.", actionName);
+            logger.info("Unavailable action {}.", actionName);
             return new JSONObject[0];
         }
         JSONObject actionData = (JSONObject)data.get("data");

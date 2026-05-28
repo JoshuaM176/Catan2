@@ -27,24 +27,28 @@ public class EventResponses {
     }
 
 
-    public static JSONObject discardHalf() {
-        return eventResponse("discardedHalf", "self", new JSONObject());
+    public static JSONObject discard(JSONObject data) {
+        return eventResponse("discarded", "self", data);
     }
 
     // Trigger Events
     public static JSONObject moveRobberTrigger() {
         return eventResponse(
-            "moveRobber",
-            "self",
+            "moveRobberTrigger",
+            "none",
             new JSONObject()
         );
     }
 
-    public static JSONObject discardHalfTrigger() {
+    public static JSONObject discardTrigger(int cardLimit, double discardPercent) {
+        JSONObject data = new JSONObject(Map.of(
+            "cardLimit", cardLimit,
+            "discardPercent", discardPercent
+        ));
         return eventResponse(
-            "discardHalf",
-            "all",
-            new JSONObject()
+            "discardTrigger",
+            "none",
+            data
         );
     }
 

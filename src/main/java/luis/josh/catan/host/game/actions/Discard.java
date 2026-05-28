@@ -28,7 +28,7 @@ public class Discard implements Action{
             );
             return new JSONObject[]{EventResponses.purchaseFailed(message)};
         }
-        return new JSONObject[]{EventResponses.discardHalf()};
+        return new JSONObject[]{EventResponses.discard(data)};
     }
     
 }

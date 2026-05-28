@@ -26,7 +26,7 @@ public class GameTest {
         JSONObject action = new JSONObject(
             Map.of(
                 "action", "placeSettlement",
-                "player", 1,
+                "player", 0,
                 "data", new JSONObject(Map.of(
                     "tile", new JSONObject(Map.of(
                         "row", 3,
@@ -44,7 +44,7 @@ public class GameTest {
         action = new JSONObject(
             Map.of(
                 "action", "placeRoad",
-                "player", 1,
+                "player",0,
                 "data", new JSONObject(Map.of(
                     "tile", new JSONObject(Map.of(
                         "row", 1,
@@ -62,7 +62,7 @@ public class GameTest {
         action = new JSONObject(
             Map.of(
                 "action", "placeSettlement",
-                "player", 1,
+                "player", 0,
                 "data", new JSONObject(Map.of(
                     "tile", new JSONObject(Map.of(
                         "row", 1,
@@ -80,7 +80,7 @@ public class GameTest {
         action = new JSONObject(
             Map.of(
                 "action", "placeRoad",
-                "player", 1,
+                "player", 0,
                 "data", new JSONObject(Map.of(
                     "tile", new JSONObject(Map.of(
                         "row", 1,
@@ -98,7 +98,7 @@ public class GameTest {
         action = new JSONObject(
             Map.of(
                 "action", "placeRoad",
-                "player", 1,
+                "player", 0,
                 "data", new JSONObject(Map.of(
                     "tile", new JSONObject(Map.of(
                         "row", 1,
@@ -116,11 +116,12 @@ public class GameTest {
         action = new JSONObject(
             Map.of(
                 "action", "rollDice",
-                "player", 1
+                "player", 0
             )
         );
-
-        testGame.acceptData(action);
+        for(int i = 0; i < 50; i++) {
+            testGame.acceptData(action);
+        }
 
     }
 }

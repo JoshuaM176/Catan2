@@ -1,6 +1,9 @@
 package luis.josh.catan.host.game.eventmanager;
 
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.json.simple.JSONObject;
@@ -15,24 +18,47 @@ public class EventManager {
 
     private Board board;
     private Player[] players;
+    private Consumer<JSONObject> messageQueue;
     private Map<String, Function<JSONObject, Event>> eventMap;
+    private Queue<Event> eventQueue = new LinkedList<>();
     private static Logger logger = HostLogger.getLogger(EventManager.class);
 
-    public EventManager(Board board, Player[] players, Map<String, Function<JSONObject, Event>> eventMap) {
+    public EventManager(Board board, Player[] players, Consumer<JSONObject> messageQueue, Map<String, Function<JSONObject, Event>> eventMap) {
         this.board = board;
         this.players = players;
+        this.messageQueue = messageQueue;
         this.eventMap = eventMap;
     }
     
-    public Event processEvent(JSONObject data) {
+    public boolean processEvent(JSONObject data) {
         String eventName = (String)data.get("event");
         Function<JSONObject, Event> eventFunction = eventMap.get(eventName);
         if(eventFunction == null) {
-            return null;
+            return false;
         }
         Event event = eventFunction.apply(data);
-        event.initialize(board, players);
-        logger.info("Starting event: {}. Data: {}", eventName, data);
-        return event;
+        logger.info("Adding event to queue: {}. Data: {}", event.getName(), data);
+        eventQueue.add(event);
+        return true;
+    }
+
+    public Event next() {
+        if(eventQueue.size() == 0) {
+            return null;
+        }
+        Event nextEvent = eventQueue.remove();
+        messageQueue.accept(new JSONObject(Map.of(
+            "event", "specialEventStarted",
+            "data", new JSONObject(Map.of(
+                "name", nextEvent.getName()
+            ))
+        )));
+        nextEvent.initialize(board, players, messageQueue);
+        if(nextEvent.isFinished()) {
+            logger.info("Skipping event: {}.", nextEvent.getName());
+            return next();
+        }
+        logger.info("Starting event: {}.", nextEvent.getName());
+        return nextEvent;
     }
 }

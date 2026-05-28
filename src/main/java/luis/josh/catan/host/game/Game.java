@@ -1,14 +1,11 @@
 package luis.josh.catan.host.game;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import luis.josh.catan.host.game.board.Board;
@@ -20,9 +17,11 @@ import luis.josh.catan.host.game.board.tile.numbertokenassigner.NumberTokenAssig
 import luis.josh.catan.host.game.board.tile.tilecreator.DefaultTileCreator;
 import luis.josh.catan.host.game.board.tile.tilecreator.TileCreator;
 import luis.josh.catan.host.game.eventmanager.EventManager;
+import luis.josh.catan.host.game.events.DiscardEvent;
 import luis.josh.catan.host.game.events.Event;
 import luis.josh.catan.host.game.events.MoveRobberEvent;
 import luis.josh.catan.host.game.player.Player;
+import luis.josh.catan.util.JSONUtil;
 import luis.josh.catan.host.HostLogger;
 import luis.josh.catan.host.game.actionmanager.ActionManager;
 import luis.josh.catan.host.game.actions.*;
@@ -35,9 +34,8 @@ public abstract class Game {
     private ActionManager actionManager;
     private EventManager eventManager;
     private Player[] players;
-    private int turn;
+    private int turn = 0;
     private Event currentEvent = null;
-    private Queue<Event> eventQueue = new LinkedList<>();
     private static final Logger logger = HostLogger.getLogger(Game.class);
 
     public Game(Consumer<JSONObject> messageQueue, int players) {
@@ -51,8 +49,7 @@ public abstract class Game {
         for(int i = 0; i < players; i++) {
             this.players[i] = new Player(e -> processEvent(e), i);
         }
-        this.eventManager = new EventManager(board, this.players, generateEvents());
-        turn = 1;
+        this.eventManager = new EventManager(board, this.players, this.messageQueue, generateEvents());
     }
 
     private Board generateBoard() {
@@ -133,7 +130,8 @@ public abstract class Game {
 
     public Map<String, Function<JSONObject, Event>> generateDefaultEvents() {
         return Map.of(
-            "moveRobber", data -> new MoveRobberEvent()
+            "moveRobberTrigger", data -> new MoveRobberEvent(data),
+            "discardTrigger", data -> new DiscardEvent(data)
         );
     }
 
@@ -145,7 +143,7 @@ public abstract class Game {
                 messageQueue.accept(new JSONObject(
                     Map.of("event", "specialEventFinished")
                 ));
-                moveEventQueue();
+                currentEvent = eventManager.next();
             }
             return;
         }
@@ -154,16 +152,13 @@ public abstract class Game {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void executeAction(JSONObject data) {
         int player = (int)data.get("player");
-        JSONArray playerArray = new JSONArray();
-        playerArray.add(player);
         if(player != turn) {
             messageQueue.accept(
                 new JSONObject(Map.of(
                     "event", "waitForTurn",
-                    "players", playerArray,
+                    "players", JSONUtil.ArrayToJSON(new Integer[]{player}),
                     "data", new JSONObject(Map.of("message", "Please wait for your turn."))
                 ))
             );
@@ -182,30 +177,13 @@ public abstract class Game {
     @SuppressWarnings("unchecked")
     private void processEvent(JSONObject data) {
         data.put("turn", turn);
-        Event event = eventManager.processEvent(data);
-        if(event != null) {
-            eventQueue.add(event);
+        logger.debug("Processing event: {}", data);
+        if(eventManager.processEvent(data)) {
             if(currentEvent == null) {
-                moveEventQueue();
+                currentEvent = eventManager.next();
             }
-            return;
-        }
+        };
         messageQueue.accept(data);
-    }
-
-    private void moveEventQueue() {
-        if(eventQueue.size() > 0) {
-            currentEvent = eventQueue.remove();
-            messageQueue.accept(new JSONObject(Map.of(
-                "event", "specialEventStarted",
-                "data", new JSONObject(Map.of(
-                    "name", currentEvent.getName()
-                ))
-            )));
-        }
-        else{
-            currentEvent = null;
-        }
     }
 
     private void nextTurn() {
@@ -219,4 +197,14 @@ public abstract class Game {
         ));
     }
 
+    private void prevTurn() {
+        turn = turn <= 0 ? players.length - 1 : turn--;
+        messageQueue.accept(EventResponses.eventResponse(
+            "changeTurn",
+            "all",
+            new JSONObject(Map.of(
+                "player", turn
+            ))
+        ));
+    }
 }

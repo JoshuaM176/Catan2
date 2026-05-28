@@ -18,7 +18,7 @@ public class RollDice implements Action{
     public JSONObject[] execute(JSONObject data, Player player) {
         int result = board.rollDice();
         if(result == 7) {
-            return new JSONObject[]{EventResponses.rolledDice(result), EventResponses.moveRobberTrigger(), EventResponses.discardHalfTrigger()};
+            return new JSONObject[]{EventResponses.rolledDice(result), EventResponses.discardTrigger(7, 0.5), EventResponses.moveRobberTrigger()};
         }
         return new JSONObject[]{EventResponses.rolledDice(result)};
     }

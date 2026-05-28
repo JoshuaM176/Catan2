@@ -87,10 +87,7 @@ public class Player implements ResourceListener{
 
     public Resource stealResource() {
         Random random = new Random();
-        int totalResources = 0;
-        for(int count: resources.values()) {
-            totalResources += count;
-        }
+        int totalResources = totalResources();
         if(totalResources > 0){
             int randomInt = random.nextInt()%totalResources + 1;
             for(Resource resource: resources.keySet()) {
@@ -102,6 +99,14 @@ public class Player implements ResourceListener{
             }
         }
         return null;
+    }
+
+    public int totalResources() {
+        int totalResources = 0;
+        for(int count: resources.values()) {
+            totalResources += count;
+        }
+        return totalResources;
     }
 
     public boolean checkAndPurchase(Map<Resource, Integer> resources) {
