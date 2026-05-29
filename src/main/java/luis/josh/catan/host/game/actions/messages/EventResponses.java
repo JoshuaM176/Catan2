@@ -37,6 +37,10 @@ public class EventResponses {
         return eventResponse("discarded", "self", data);
     }
 
+    public static JSONObject usedDevelopmentCard(String card) {
+        return eventResponse("usedDevelopmentCard", "self", new JSONObject(Map.of("card", card)));
+    }
+
     // Trigger Events
     public static JSONObject moveRobberTrigger() {
         return eventResponse(

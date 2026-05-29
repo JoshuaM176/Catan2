@@ -10,7 +10,7 @@ public class Knight extends DevelopmentCard{
   @Override
   public JSONObject[] execute(JSONObject data, Player player) {
     player.addKnight();
-    return new JSONObject[]{EventResponses.moveRobberTrigger()};
+    return new JSONObject[]{EventResponses.usedDevelopmentCard(getName()), EventResponses.moveRobberTrigger()};
   }
 
   @Override

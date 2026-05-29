@@ -114,7 +114,7 @@ public class ActionManager {
     @SuppressWarnings("unchecked")
     private void replaceSelf(JSONObject jsonObject, int playerNum) {
         System.out.println(jsonObject);
-        if("self".equals(jsonObject.get("players"))) {
+        if((jsonObject.get("players")).equals("self")) {
             jsonObject.put("players", JSONUtil.ArrayToJSON(new Integer[]{playerNum}));
         }
     }

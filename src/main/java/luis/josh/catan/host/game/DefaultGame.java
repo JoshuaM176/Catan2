@@ -23,6 +23,7 @@ import luis.josh.catan.host.game.events.SetupEvent;
 import luis.josh.catan.host.game.gamepieces.cards.CardDeck;
 import luis.josh.catan.host.game.gamepieces.cards.developmentcards.DevelopmentCard;
 import luis.josh.catan.host.game.gamepieces.cards.developmentcards.Knight;
+import luis.josh.catan.host.game.gamepieces.cards.developmentcards.Monopoly;
 import luis.josh.catan.host.game.player.Player;
 
 public class DefaultGame extends Game{
@@ -104,13 +105,17 @@ public class DefaultGame extends Game{
                     Resource.WHEAT, 1
                 )
             ),
-            new UseDevelopmentCard(new DevelopmentCard[]{new Knight()})
+            new UseDevelopmentCard(new DevelopmentCard[]{
+                new Knight(),
+                new Monopoly(players)
+            })
         };
     }
 
     private CardDeck<DevelopmentCard> generateDevCards() {
         CardDeck<DevelopmentCard> cardDeck = new CardDeck<>(Map.of(
-            new Knight(), 14
+            new Knight(), 14,
+            new Monopoly(players), 2
         ));
         return cardDeck;
     }

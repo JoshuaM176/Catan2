@@ -64,6 +64,9 @@ public class CardDeck<C extends Card> {
      * @param amount The amount to remove.
      */
     public void subtractCards(C card, int amount) {
+        if(amount == 0) {
+            return;
+        }
         cards.put(card, cards.get(card)-amount);
     }
 
@@ -120,6 +123,14 @@ public class CardDeck<C extends Card> {
             return true;
         }
         return false;
+    }
+
+    public int cardCount(C card) {
+        Integer count = cards.get(card);
+        if(count == null) {
+            return 0;
+        }
+        return count.intValue();
     }
 
     @Override

@@ -186,7 +186,8 @@ public class GameTest {
             "action", "useDevelopmentCard",
             "player", 0,
             "data", new JSONObject(Map.of(
-                "card", "knight"
+                "card", "monopoly",
+                "resource", "WHEAT"
             ))
         ));
 

@@ -71,6 +71,28 @@ public class Player implements ResourceListener{
     }
 
     /**
+     * Add resources to this player's hand.
+     * @param resource Type of resource to add.
+     * @param amount Amount of the resource to add.
+     */
+    public void addResources(Resource resource, int amount) {
+        resources.addCards(new ResourceCard(resource), amount);
+        messageQueue.accept(
+            EventResponses.eventResponse(
+                "gainedResource",
+                "all",
+                new JSONObject(
+                    Map.of(
+                        "resource", resource.name(),
+                        "amount", amount,
+                        "player", playerNum
+                    )
+                )
+            )
+        );
+    }
+
+    /**
      * Add a development card to this player's hand.
      * @param card The type of card to add.
      */
@@ -178,6 +200,17 @@ public class Player implements ResourceListener{
         ResourceCard randomCard = resources.drawCard();
         if(randomCard == null) { return null; }
         return randomCard.resource();
+    }
+
+    /**
+     * Subtracts all resources of a specific type and returns the amount.
+     * @param resource
+     * @return
+     */
+    public int stealAllResources(Resource resource) {
+        int count = resources.cardCount(new ResourceCard(resource));
+        subtractResource(resource, count);
+        return count;
     }
 
     /**
