@@ -1,9 +1,6 @@
 package luis.josh.catan.host.game.actions;
 
-import java.util.ArrayList;
-
 import org.json.simple.JSONObject;
-
 import luis.josh.catan.host.game.player.Player;
 
 public interface Action {

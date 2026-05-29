@@ -6,11 +6,23 @@
 
 ## Events
 
+  - addResource
+    - resource
+    - amount
+    - player
+
+  - subtractResource
+    - resource
+    - amount
+    - player
+
 ## Special Events
 
   - moveRobberEvent
 
   - discardEvent
+
+  - setupEvent
 
 ## Actions
 

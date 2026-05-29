@@ -58,7 +58,7 @@ public class GameTest {
 
         testGame.acceptData(action);
 
-        // Player 1 place second settlement
+        // Player 1 place first settlement
         action = new JSONObject(
             Map.of(
                 "action", "placeSettlement",
@@ -94,22 +94,21 @@ public class GameTest {
 
         testGame.acceptData(action);
         
-        // Player 0 try placing another road
         action = new JSONObject(
             Map.of(
-                "action", "placeRoad",
-                "player", 0,
+                "action", "placeSettlement",
+                "player", 1,
                 "data", new JSONObject(Map.of(
                     "tile", new JSONObject(Map.of(
-                        "row", 1,
+                        "row", 2,
                         "col", 1,
-                        "edge", 3
+                        "vertex", 3
                     )),
-                    "start", 0
+                    "start",2
                 ))
             )
         );
-        
+
         testGame.acceptData(action);
 
         // Player 1 rolls the dice
